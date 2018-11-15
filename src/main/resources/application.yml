@@ -1,0 +1,10 @@
+spring:
+  thymeleaf:
+    mode: HTML5
+logging:
+  level:
+    org:
+      springframework: error
+server:
+  port: ${port:8888}
+

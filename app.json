@@ -1,0 +1,7 @@
+{
+  "name": "jiuask-server",
+  "description": "jiuask-server",
+  "addons": [
+    "cleardb:ignite"
+  ]
+}

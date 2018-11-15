@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+}
+
+.content {
+    margin-top: 50px;
+}
+
+.navbar-customize {
+    background-color: #550c49;
+    color: white;
+    width: 100%;
+}
+
+.navbar-default .navbar-brand {
+    color: white;
+}
+
+.lead {
+    font-size: 16px;
+}
+
+        
