@@ -25,3 +25,5 @@ target
 .idea/
 *.iml
 .mvn/
+
+/src/main/resources/application.yml
