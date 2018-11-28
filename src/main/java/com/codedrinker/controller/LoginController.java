@@ -1,12 +1,16 @@
 package com.codedrinker.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.codedrinker.adapter.WechatAdapter;
+import com.codedrinker.dao.UserMapper;
 import com.codedrinker.dto.LoginDTO;
 import com.codedrinker.dto.ResultDTO;
 import com.codedrinker.dto.SessionDTO;
 import com.codedrinker.dto.TokenDTO;
 import com.codedrinker.error.CommonErrorCode;
 import com.codedrinker.error.ErrorCodeException;
+import com.codedrinker.model.User;
+import com.codedrinker.service.UserService;
 import com.codedrinker.util.DigestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,9 @@ public class LoginController {
     @Autowired
     private WechatAdapter wechatAdapter;
 
+    @Autowired
+    private UserService userService;
+
     // 定义 domain/api/login 访问接口，用于实现登录
     // 使用 LoginDTO 自动解析传递过来的 JSON 数据
     @RequestMapping("/api/login")
@@ -41,10 +48,15 @@ public class LoginController {
 
             // 检验传递过来的使用户信息是否合法
             DigestUtil.checkDigest(loginDTO.getRawData(), sessionDTO.getSessionKey(), loginDTO.getSignature());
-            //TODO: 储存 token
+            String token = UUID.randomUUID().toString();
+
+            User user = JSON.parseObject(loginDTO.getRawData(), User.class);
+            user.setToken(token);
+            user.setOpenid(sessionDTO.getOpenid());
+            userService.saveOrUpdate(user);
             //生成token，用于自定义登录态，这里的存储逻辑比较复杂，放到下一讲
             TokenDTO data = new TokenDTO();
-            data.setToken(UUID.randomUUID().toString());
+            data.setToken(token);
             return ResultDTO.ok(data);
         } catch (ErrorCodeException e) {
             log.error("login error, info : {}", loginDTO, e.getMessage());

@@ -8,3 +8,14 @@ logging:
 server:
   port: ${port:8888}
 
+# 记得替换成你的id和secret
+wechat:
+  appid: appId
+  secret: secret
+
+# h2
+db:
+  url: jdbc:h2:~/jiuask
+  username: sa
+  password: sa
+  driver: org.h2.Driver

@@ -26,4 +26,3 @@ target
 *.iml
 .mvn/
 
-/src/main/resources/application.yml
