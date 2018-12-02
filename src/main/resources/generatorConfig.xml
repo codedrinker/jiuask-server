@@ -41,5 +41,8 @@
         <table tableName="user" domainObjectName="User">
             <property name="useActualColumnNames" value="false"/>
         </table>
+        <table tableName="question" domainObjectName="Question">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
     </context>
 </generatorConfiguration>
