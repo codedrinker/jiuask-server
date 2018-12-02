@@ -11,3 +11,9 @@ server:
 wechat:
   appid: ${WECHAT_APPID}
   secret: ${WECHAT_SECRET}
+
+db:
+  url: ${JDBC_DATABASE_URL}&useUnicode=true&characterEncoding=UTF-8
+  username: ${JDBC_DATABASE_USERNAME}
+  password: ${JDBC_DATABASE_PASSWORD}
+  driver: com.mysql.jdbc.Driver
