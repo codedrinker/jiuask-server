@@ -4,7 +4,10 @@ spring:
 logging:
   level:
     org:
-      springframework: error
+      springframework: debug
+    com:
+      codedrinker:
+        dao: debug
 server:
   port: ${port:8888}
 

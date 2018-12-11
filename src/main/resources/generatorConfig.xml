@@ -10,6 +10,7 @@
 
     <context id="table" targetRuntime="MyBatis3">
         <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"></plugin>
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
         <commentGenerator>
             <property name="suppressAllComments" value="true"></property>
         </commentGenerator>

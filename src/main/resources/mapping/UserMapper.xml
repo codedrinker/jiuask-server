@@ -272,4 +272,18 @@
       STATUS = #{status,jdbcType=TINYINT}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.codedrinker.model.UserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from USER
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
 </mapper>
