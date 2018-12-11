@@ -4,7 +4,7 @@ spring:
 logging:
   level:
     org:
-      springframework: debug
+      springframework: error
     com:
       codedrinker:
         dao: debug
@@ -13,7 +13,7 @@ server:
 
 # 记得替换成你的id和secret
 wechat:
-  appid: appId
+  appid: appid
   secret: secret
 
 # h2
@@ -22,3 +22,10 @@ db:
   username: sa
   password: sa
   driver: org.h2.Driver
+
+# mysql
+#db:
+#  url: jdbc:mysql://localhost:3306/jiuask?reconnect=true
+#  username: pig
+#  password: 123456
+#  driver: com.mysql.jdbc.Driver
