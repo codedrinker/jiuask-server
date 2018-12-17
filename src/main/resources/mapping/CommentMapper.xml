@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.codedrinker.dao.QuestionMapper">
-  <resultMap id="BaseResultMap" type="com.codedrinker.model.Question">
+<mapper namespace="com.codedrinker.dao.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.codedrinker.model.Comment">
     <id column="ID" jdbcType="INTEGER" property="id" />
     <result column="USER_ID" jdbcType="INTEGER" property="userId" />
-    <result column="TITLE" jdbcType="VARCHAR" property="title" />
-    <result column="COMMENT_COUNT" jdbcType="INTEGER" property="commentCount" />
-    <result column="VIEW_COUNT" jdbcType="INTEGER" property="viewCount" />
+    <result column="QUESTION_ID" jdbcType="INTEGER" property="questionId" />
+    <result column="REPLY_USER_ID" jdbcType="INTEGER" property="replyUserId" />
+    <result column="REPLY_ID" jdbcType="INTEGER" property="replyId" />
+    <result column="CONTENT" jdbcType="VARCHAR" property="content" />
     <result column="LIKE_COUNT" jdbcType="INTEGER" property="likeCount" />
     <result column="GMT_CREATE" jdbcType="BIGINT" property="gmtCreate" />
     <result column="GMT_MODIFIED" jdbcType="BIGINT" property="gmtModified" />
-    <result column="STATUS" jdbcType="TINYINT" property="status" />
     <result column="FORM_ID" jdbcType="VARCHAR" property="formId" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.codedrinker.model.Question">
-    <result column="CONTENT" jdbcType="CLOB" property="content" />
+    <result column="STATUS" jdbcType="TINYINT" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -75,21 +73,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    ID, USER_ID, TITLE, COMMENT_COUNT, VIEW_COUNT, LIKE_COUNT, GMT_CREATE, GMT_MODIFIED, 
-    STATUS, FORM_ID
+    ID, USER_ID, QUESTION_ID, REPLY_USER_ID, REPLY_ID, CONTENT, LIKE_COUNT, GMT_CREATE, 
+    GMT_MODIFIED, FORM_ID, STATUS
   </sql>
-  <sql id="Blob_Column_List">
-    CONTENT
-  </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.codedrinker.model.QuestionExample" resultMap="ResultMapWithBLOBs">
+  <select id="selectByExample" parameterType="com.codedrinker.model.CommentExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from QUESTION
+    from COMMENT
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -97,50 +90,34 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="com.codedrinker.model.QuestionExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from QUESTION
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from QUESTION
+    from COMMENT
     where ID = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from QUESTION
+    delete from COMMENT
     where ID = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.codedrinker.model.QuestionExample">
-    delete from QUESTION
+  <delete id="deleteByExample" parameterType="com.codedrinker.model.CommentExample">
+    delete from COMMENT
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.codedrinker.model.Question">
-    insert into QUESTION (ID, USER_ID, TITLE, 
-      COMMENT_COUNT, VIEW_COUNT, LIKE_COUNT, 
-      GMT_CREATE, GMT_MODIFIED, STATUS, 
-      FORM_ID, CONTENT)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
-      #{commentCount,jdbcType=INTEGER}, #{viewCount,jdbcType=INTEGER}, #{likeCount,jdbcType=INTEGER}, 
-      #{gmtCreate,jdbcType=BIGINT}, #{gmtModified,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
-      #{formId,jdbcType=VARCHAR}, #{content,jdbcType=CLOB})
+  <insert id="insert" parameterType="com.codedrinker.model.Comment">
+    insert into COMMENT (ID, USER_ID, QUESTION_ID, 
+      REPLY_USER_ID, REPLY_ID, CONTENT, 
+      LIKE_COUNT, GMT_CREATE, GMT_MODIFIED, 
+      FORM_ID, STATUS)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{questionId,jdbcType=INTEGER}, 
+      #{replyUserId,jdbcType=INTEGER}, #{replyId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{likeCount,jdbcType=INTEGER}, #{gmtCreate,jdbcType=BIGINT}, #{gmtModified,jdbcType=BIGINT}, 
+      #{formId,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.codedrinker.model.Question">
-    insert into QUESTION
+  <insert id="insertSelective" parameterType="com.codedrinker.model.Comment">
+    insert into COMMENT
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         ID,
@@ -148,14 +125,17 @@
       <if test="userId != null">
         USER_ID,
       </if>
-      <if test="title != null">
-        TITLE,
+      <if test="questionId != null">
+        QUESTION_ID,
       </if>
-      <if test="commentCount != null">
-        COMMENT_COUNT,
+      <if test="replyUserId != null">
+        REPLY_USER_ID,
       </if>
-      <if test="viewCount != null">
-        VIEW_COUNT,
+      <if test="replyId != null">
+        REPLY_ID,
+      </if>
+      <if test="content != null">
+        CONTENT,
       </if>
       <if test="likeCount != null">
         LIKE_COUNT,
@@ -166,14 +146,11 @@
       <if test="gmtModified != null">
         GMT_MODIFIED,
       </if>
-      <if test="status != null">
-        STATUS,
-      </if>
       <if test="formId != null">
         FORM_ID,
       </if>
-      <if test="content != null">
-        CONTENT,
+      <if test="status != null">
+        STATUS,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -183,14 +160,17 @@
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="title != null">
-        #{title,jdbcType=VARCHAR},
+      <if test="questionId != null">
+        #{questionId,jdbcType=INTEGER},
       </if>
-      <if test="commentCount != null">
-        #{commentCount,jdbcType=INTEGER},
+      <if test="replyUserId != null">
+        #{replyUserId,jdbcType=INTEGER},
       </if>
-      <if test="viewCount != null">
-        #{viewCount,jdbcType=INTEGER},
+      <if test="replyId != null">
+        #{replyId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
       </if>
       <if test="likeCount != null">
         #{likeCount,jdbcType=INTEGER},
@@ -201,25 +181,22 @@
       <if test="gmtModified != null">
         #{gmtModified,jdbcType=BIGINT},
       </if>
-      <if test="status != null">
-        #{status,jdbcType=TINYINT},
-      </if>
       <if test="formId != null">
         #{formId,jdbcType=VARCHAR},
       </if>
-      <if test="content != null">
-        #{content,jdbcType=CLOB},
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.codedrinker.model.QuestionExample" resultType="java.lang.Long">
-    select count(*) from QUESTION
+  <select id="countByExample" parameterType="com.codedrinker.model.CommentExample" resultType="java.lang.Long">
+    select count(*) from COMMENT
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update QUESTION
+    update COMMENT
     <set>
       <if test="record.id != null">
         ID = #{record.id,jdbcType=INTEGER},
@@ -227,14 +204,17 @@
       <if test="record.userId != null">
         USER_ID = #{record.userId,jdbcType=INTEGER},
       </if>
-      <if test="record.title != null">
-        TITLE = #{record.title,jdbcType=VARCHAR},
+      <if test="record.questionId != null">
+        QUESTION_ID = #{record.questionId,jdbcType=INTEGER},
       </if>
-      <if test="record.commentCount != null">
-        COMMENT_COUNT = #{record.commentCount,jdbcType=INTEGER},
+      <if test="record.replyUserId != null">
+        REPLY_USER_ID = #{record.replyUserId,jdbcType=INTEGER},
       </if>
-      <if test="record.viewCount != null">
-        VIEW_COUNT = #{record.viewCount,jdbcType=INTEGER},
+      <if test="record.replyId != null">
+        REPLY_ID = #{record.replyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null">
+        CONTENT = #{record.content,jdbcType=VARCHAR},
       </if>
       <if test="record.likeCount != null">
         LIKE_COUNT = #{record.likeCount,jdbcType=INTEGER},
@@ -245,67 +225,51 @@
       <if test="record.gmtModified != null">
         GMT_MODIFIED = #{record.gmtModified,jdbcType=BIGINT},
       </if>
-      <if test="record.status != null">
-        STATUS = #{record.status,jdbcType=TINYINT},
-      </if>
       <if test="record.formId != null">
         FORM_ID = #{record.formId,jdbcType=VARCHAR},
       </if>
-      <if test="record.content != null">
-        CONTENT = #{record.content,jdbcType=CLOB},
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=TINYINT},
       </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map">
-    update QUESTION
-    set ID = #{record.id,jdbcType=INTEGER},
-      USER_ID = #{record.userId,jdbcType=INTEGER},
-      TITLE = #{record.title,jdbcType=VARCHAR},
-      COMMENT_COUNT = #{record.commentCount,jdbcType=INTEGER},
-      VIEW_COUNT = #{record.viewCount,jdbcType=INTEGER},
-      LIKE_COUNT = #{record.likeCount,jdbcType=INTEGER},
-      GMT_CREATE = #{record.gmtCreate,jdbcType=BIGINT},
-      GMT_MODIFIED = #{record.gmtModified,jdbcType=BIGINT},
-      STATUS = #{record.status,jdbcType=TINYINT},
-      FORM_ID = #{record.formId,jdbcType=VARCHAR},
-      CONTENT = #{record.content,jdbcType=CLOB}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
   <update id="updateByExample" parameterType="map">
-    update QUESTION
+    update COMMENT
     set ID = #{record.id,jdbcType=INTEGER},
       USER_ID = #{record.userId,jdbcType=INTEGER},
-      TITLE = #{record.title,jdbcType=VARCHAR},
-      COMMENT_COUNT = #{record.commentCount,jdbcType=INTEGER},
-      VIEW_COUNT = #{record.viewCount,jdbcType=INTEGER},
+      QUESTION_ID = #{record.questionId,jdbcType=INTEGER},
+      REPLY_USER_ID = #{record.replyUserId,jdbcType=INTEGER},
+      REPLY_ID = #{record.replyId,jdbcType=INTEGER},
+      CONTENT = #{record.content,jdbcType=VARCHAR},
       LIKE_COUNT = #{record.likeCount,jdbcType=INTEGER},
       GMT_CREATE = #{record.gmtCreate,jdbcType=BIGINT},
       GMT_MODIFIED = #{record.gmtModified,jdbcType=BIGINT},
-      STATUS = #{record.status,jdbcType=TINYINT},
-      FORM_ID = #{record.formId,jdbcType=VARCHAR}
+      FORM_ID = #{record.formId,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=TINYINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.codedrinker.model.Question">
-    update QUESTION
+  <update id="updateByPrimaryKeySelective" parameterType="com.codedrinker.model.Comment">
+    update COMMENT
     <set>
       <if test="userId != null">
         USER_ID = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="title != null">
-        TITLE = #{title,jdbcType=VARCHAR},
+      <if test="questionId != null">
+        QUESTION_ID = #{questionId,jdbcType=INTEGER},
       </if>
-      <if test="commentCount != null">
-        COMMENT_COUNT = #{commentCount,jdbcType=INTEGER},
+      <if test="replyUserId != null">
+        REPLY_USER_ID = #{replyUserId,jdbcType=INTEGER},
       </if>
-      <if test="viewCount != null">
-        VIEW_COUNT = #{viewCount,jdbcType=INTEGER},
+      <if test="replyId != null">
+        REPLY_ID = #{replyId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        CONTENT = #{content,jdbcType=VARCHAR},
       </if>
       <if test="likeCount != null">
         LIKE_COUNT = #{likeCount,jdbcType=INTEGER},
@@ -316,68 +280,36 @@
       <if test="gmtModified != null">
         GMT_MODIFIED = #{gmtModified,jdbcType=BIGINT},
       </if>
-      <if test="status != null">
-        STATUS = #{status,jdbcType=TINYINT},
-      </if>
       <if test="formId != null">
         FORM_ID = #{formId,jdbcType=VARCHAR},
       </if>
-      <if test="content != null">
-        CONTENT = #{content,jdbcType=CLOB},
+      <if test="status != null">
+        STATUS = #{status,jdbcType=TINYINT},
       </if>
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.codedrinker.model.Question">
-    update QUESTION
+  <update id="updateByPrimaryKey" parameterType="com.codedrinker.model.Comment">
+    update COMMENT
     set USER_ID = #{userId,jdbcType=INTEGER},
-      TITLE = #{title,jdbcType=VARCHAR},
-      COMMENT_COUNT = #{commentCount,jdbcType=INTEGER},
-      VIEW_COUNT = #{viewCount,jdbcType=INTEGER},
+      QUESTION_ID = #{questionId,jdbcType=INTEGER},
+      REPLY_USER_ID = #{replyUserId,jdbcType=INTEGER},
+      REPLY_ID = #{replyId,jdbcType=INTEGER},
+      CONTENT = #{content,jdbcType=VARCHAR},
       LIKE_COUNT = #{likeCount,jdbcType=INTEGER},
       GMT_CREATE = #{gmtCreate,jdbcType=BIGINT},
       GMT_MODIFIED = #{gmtModified,jdbcType=BIGINT},
-      STATUS = #{status,jdbcType=TINYINT},
       FORM_ID = #{formId,jdbcType=VARCHAR},
-      CONTENT = #{content,jdbcType=CLOB}
+      STATUS = #{status,jdbcType=TINYINT}
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.codedrinker.model.Question">
-    update QUESTION
-    set USER_ID = #{userId,jdbcType=INTEGER},
-      TITLE = #{title,jdbcType=VARCHAR},
-      COMMENT_COUNT = #{commentCount,jdbcType=INTEGER},
-      VIEW_COUNT = #{viewCount,jdbcType=INTEGER},
-      LIKE_COUNT = #{likeCount,jdbcType=INTEGER},
-      GMT_CREATE = #{gmtCreate,jdbcType=BIGINT},
-      GMT_MODIFIED = #{gmtModified,jdbcType=BIGINT},
-      STATUS = #{status,jdbcType=TINYINT},
-      FORM_ID = #{formId,jdbcType=VARCHAR}
-    where ID = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByExampleWithBLOBsWithRowbounds" parameterType="com.codedrinker.model.QuestionExample" resultMap="ResultMapWithBLOBs">
+  <select id="selectByExampleWithRowbounds" parameterType="com.codedrinker.model.CommentExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from QUESTION
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByExampleWithRowbounds" parameterType="com.codedrinker.model.QuestionExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from QUESTION
+    from COMMENT
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>

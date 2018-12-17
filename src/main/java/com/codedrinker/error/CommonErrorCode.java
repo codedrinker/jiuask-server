@@ -10,6 +10,8 @@ public enum CommonErrorCode implements IErrorCode {
     UNKOWN_ERROR(1004, "未知错误请重试"),
     NO_USER(1005, "登录异常，请重新登录"),
     SIGNATURE_ERROR(1006, "验证失败，传递信息有误"),
+    NO_QUESTION(1007, "查询问题不存在"),
+    SEND_MESSAGE_ERROR(1008, "通知失败"),
     ;
 
     private Integer code;

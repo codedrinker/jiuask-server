@@ -2,7 +2,6 @@ package com.codedrinker.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.codedrinker.adapter.WechatAdapter;
-import com.codedrinker.dao.UserMapper;
 import com.codedrinker.dto.LoginDTO;
 import com.codedrinker.dto.ResultDTO;
 import com.codedrinker.dto.SessionDTO;

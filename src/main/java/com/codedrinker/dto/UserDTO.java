@@ -8,6 +8,9 @@ import lombok.Data;
 @Data
 public class UserDTO {
 
+    //id
+    private Integer id;
+
     // 微信昵称
     private String nickName;
 

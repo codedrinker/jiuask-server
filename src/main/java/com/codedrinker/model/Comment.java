@@ -1,15 +1,17 @@
 package com.codedrinker.model;
 
-public class Question {
+public class Comment {
     private Integer id;
 
     private Integer userId;
 
-    private String title;
+    private Integer questionId;
 
-    private Integer commentCount;
+    private Integer replyUserId;
 
-    private Integer viewCount;
+    private Integer replyId;
+
+    private String content;
 
     private Integer likeCount;
 
@@ -17,11 +19,9 @@ public class Question {
 
     private Long gmtModified;
 
-    private Byte status;
-
     private String formId;
 
-    private String content;
+    private Byte status;
 
     public Integer getId() {
         return id;
@@ -39,28 +39,36 @@ public class Question {
         this.userId = userId;
     }
 
-    public String getTitle() {
-        return title;
+    public Integer getQuestionId() {
+        return questionId;
     }
 
-    public void setTitle(String title) {
-        this.title = title == null ? null : title.trim();
+    public void setQuestionId(Integer questionId) {
+        this.questionId = questionId;
     }
 
-    public Integer getCommentCount() {
-        return commentCount;
+    public Integer getReplyUserId() {
+        return replyUserId;
     }
 
-    public void setCommentCount(Integer commentCount) {
-        this.commentCount = commentCount;
+    public void setReplyUserId(Integer replyUserId) {
+        this.replyUserId = replyUserId;
     }
 
-    public Integer getViewCount() {
-        return viewCount;
+    public Integer getReplyId() {
+        return replyId;
     }
 
-    public void setViewCount(Integer viewCount) {
-        this.viewCount = viewCount;
+    public void setReplyId(Integer replyId) {
+        this.replyId = replyId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 
     public Integer getLikeCount() {
@@ -87,14 +95,6 @@ public class Question {
         this.gmtModified = gmtModified;
     }
 
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
-
     public String getFormId() {
         return formId;
     }
@@ -103,11 +103,11 @@ public class Question {
         this.formId = formId == null ? null : formId.trim();
     }
 
-    public String getContent() {
-        return content;
+    public Byte getStatus() {
+        return status;
     }
 
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 }

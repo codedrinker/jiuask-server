@@ -1,7 +1,9 @@
 package com.codedrinker.controller;
 
+import com.codedrinker.dto.QuestionDTO;
 import com.codedrinker.dto.ResultDTO;
 import com.codedrinker.error.CommonErrorCode;
+import com.codedrinker.error.ErrorCodeException;
 import com.codedrinker.model.Question;
 import com.codedrinker.service.QuestionService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,9 +39,21 @@ public class QuestionController {
             List<Question> questions = questionService.list(page, size);
             return ResultDTO.ok(questions);
         } catch (Exception e) {
-            log.error("QuestionController post error", e);
+            log.error("QuestionController list error", e);
             return ResultDTO.fail(CommonErrorCode.UNKOWN_ERROR);
         }
     }
 
+    @RequestMapping(value = "api/question/get", method = RequestMethod.GET)
+    public ResultDTO get(@RequestParam(name = "id") Integer id) {
+        try {
+            QuestionDTO question = questionService.get(id);
+            return ResultDTO.ok(question);
+        } catch (ErrorCodeException e) {
+            return ResultDTO.fail(e);
+        } catch (Exception e) {
+            log.error("QuestionController get error", e);
+            return ResultDTO.fail(CommonErrorCode.UNKOWN_ERROR);
+        }
+    }
 }

@@ -2,12 +2,14 @@ package com.codedrinker.interceptor;
 
 import com.alibaba.fastjson.JSON;
 import com.codedrinker.dto.ResultDTO;
+import com.codedrinker.dto.UserDTO;
 import com.codedrinker.error.CommonErrorCode;
 import com.codedrinker.model.User;
 import com.codedrinker.service.UserService;
 import com.codedrinker.session.SessionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -43,7 +45,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
 
         //把获取到的user信息暂存到 ThreadLocal 里面，以便上线文中方便的使用
-        SessionUtil.setUser(user);
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(user, userDTO);
+        SessionUtil.setUser(userDTO);
         return true;
     }
 

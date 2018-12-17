@@ -1,18 +1,18 @@
 package com.codedrinker.session;
 
-import com.codedrinker.model.User;
+import com.codedrinker.dto.UserDTO;
 
 /**
  * Created by codedrinker on 2018/12/2.
  */
 public class SessionUtil {
-    private static ThreadLocal<User> userThreadLocal = new ThreadLocal<>();
+    private static ThreadLocal<UserDTO> userThreadLocal = new ThreadLocal<>();
 
-    public static void setUser(User user) {
+    public static void setUser(UserDTO user) {
         userThreadLocal.set(user);
     }
 
-    public static User getUser() {
+    public static UserDTO getUser() {
         return userThreadLocal.get();
     }
 
